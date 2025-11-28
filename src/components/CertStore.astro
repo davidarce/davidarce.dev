@@ -2,10 +2,10 @@
 import { Package, Award } from "lucide-react";
 ---
 
-<section id="education" class="py-20 md:pl-16">
-    <div class="mx-auto max-w-5xl px-6">
-        <div class="mb-12 flex items-center gap-4">
-            <h2 class="text-3xl font-bold text-text font-mono">
+<section id="education" class="py-12 md:py-20 md:pl-16">
+    <div class="mx-auto max-w-5xl px-4 md:px-6">
+        <div class="mb-8 md:mb-12 flex items-center gap-4">
+            <h2 class="text-2xl md:text-3xl font-bold text-text font-mono">
                 <span class="maven-color">mvn install</span> certifications
             </h2>
             <div class="h-px flex-1 bg-white/10"></div>
@@ -14,10 +14,10 @@ import { Package, Award } from "lucide-react";
         <div class="grid gap-8 lg:grid-cols-3">
             <!-- Education Card -->
             <div
-                class="lg:col-span-2 relative overflow-hidden rounded-lg border-2 border-text-muted/20 bg-surface p-6 transition-all hover:border-maven/50 shadow-sm"
+                class="lg:col-span-2 relative overflow-hidden rounded-lg border-2 border-text-muted/20 bg-surface p-4 md:p-6 transition-all hover:border-maven/50 shadow-sm"
             >
                 <div class="absolute right-0 top-0 p-4 opacity-10">
-                    <Award className="h-32 w-32 maven-color" />
+                    <Award className="h-24 w-24 md:h-32 md:w-32 maven-color" />
                 </div>
 
                 <div class="relative z-10">
@@ -28,7 +28,7 @@ import { Package, Award } from "lucide-react";
                         <span>package: education</span>
                     </div>
 
-                    <h3 class="text-2xl font-bold text-text mb-1">
+                    <h3 class="text-xl md:text-2xl font-bold text-text mb-1">
                         Bachelor's Degree in Computer and Systems Engineering
                     </h3>
                     <p class="text-lg text-text-muted font-mono mb-4">
@@ -38,8 +38,12 @@ import { Package, Award } from "lucide-react";
                     <div
                         class="rounded bg-surface-hover p-4 font-mono text-sm text-text border-l-2 border-maven"
                     >
-                        "Professional with a capacity to formulate, analyze,
-                        design and solve problems..."
+                        Ethical, critical, and autonomous professional capable
+                        of leading interdisciplinary teams. Specialized in
+                        Software Engineering, IT Infrastructure, and Technology
+                        Management, with the ability to design, develop, and
+                        implement innovative solutions for complex
+                        organizational challenges.
                     </div>
                 </div>
             </div>
@@ -56,9 +60,9 @@ import { Package, Award } from "lucide-react";
                 <ul class="space-y-3 font-mono text-sm">
                     {
                         [
-                            "Java - Platzi",
                             "Clean Architectures - Codely",
                             "Web Apps & Architecture - Educative",
+                            "Advanced Go Course: REST - Platzi",
                             "AI Integration - Codely",
                             "MCP Fundamentals - Hugging Face",
                             "MCP Automation - Hugging Face",
@@ -66,9 +70,7 @@ import { Package, Award } from "lucide-react";
                             "Git and Github - Platzi",
                         ].map((course) => (
                             <li class="flex items-start text-text-muted hover:text-maven transition-colors cursor-default">
-                                <span class="mr-2 maven-color">"</span>
                                 <span class="flex-1">{course}</span>
-                                <span class="maven-color">"</span>,
                             </li>
                         ))
                     }

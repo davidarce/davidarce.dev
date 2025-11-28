@@ -1,78 +1,17 @@
 ---
-import { experienceData } from '../data/experience';
-import { GitCommit, GitBranch } from 'lucide-react';
-import TechBadge from './TechBadge';
+import { experienceData } from "../data/experience";
+import GitLogList from "./GitLogList";
 ---
 
-<section id="experience" class="py-20 md:pl-16">
-  <div class="mx-auto max-w-5xl px-6">
-    <div class="mb-12 flex items-center gap-4">
-      <h2 class="text-3xl font-bold text-text font-mono">
+<section id="experience" class="py-12 md:py-20 md:pl-16">
+  <div class="mx-auto max-w-5xl px-4 md:px-6">
+    <div class="mb-8 md:mb-12 flex items-center gap-4">
+      <h2 class="text-2xl md:text-3xl font-bold text-text font-mono">
         <span class="text-primary">git log</span> --graph --oneline
       </h2>
       <div class="h-px flex-1 bg-white/10"></div>
     </div>
 
-    <div class="relative space-y-8 font-mono">
-      <!-- Vertical Line - Now visible in light mode -->
-      <div class="absolute left-0 top-0 h-full w-10 flex justify-center">
-        <div class="h-full w-0.5 bg-text-muted opacity-30"></div>
-      </div>
-
-      {experienceData.map((item, index) => (
-        <div id={`commit-${index}`} class="group relative flex gap-6">
-          <!-- Commit Node -->
-          <div class="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-text-muted/50 bg-surface transition-all group-hover:border-primary/50 group-hover:shadow-[0_0_15px_rgba(0,243,255,0.3)]">
-            <GitCommit className="h-5 w-5 text-text-muted transition-colors group-hover:text-primary" />
-          </div>
-
-          <!-- Content -->
-          <div class="flex-1 rounded-lg border border-text-muted/20 bg-surface p-6 transition-all hover:border-primary/30 hover:bg-surface-hover shadow-sm">
-            <div class="mb-2 flex flex-wrap items-center gap-3 text-sm">
-              <span class="text-primary font-bold">{item.date}</span>
-              <span class="text-text-muted">commit {Math.random().toString(16).substring(2, 9)}</span>
-              <div class="flex items-center gap-1 rounded-full bg-secondary/10 px-2 py-0.5 text-xs text-secondary border border-secondary/20">
-                <GitBranch className="h-3 w-3" />
-                <span>main</span>
-              </div>
-            </div>
-
-            <h3 class="text-xl font-bold text-text mb-1 group-hover:text-primary transition-colors">
-              {item.title}
-            </h3>
-            <div class="mb-4 flex items-center gap-2 text-text-muted">
-              <span>@ {item.company}</span>
-              <span>•</span>
-              <span>{item.location}</span>
-            </div>
-
-            {item.description && (
-              <p class="mb-4 text-text font-sans">{item.description}</p>
-            )}
-
-            {item.responsibilities && (
-              <div class="space-y-2 border-l-2 border-text-muted/20 pl-4">
-                {item.responsibilities.map((resp) => (
-                  <p class="text-sm text-text-muted font-sans">+ {resp}</p>
-                ))}
-              </div>
-            )}
-            
-            <div class="mt-4 flex flex-wrap gap-2">
-              {item.technologies?.map((tech) => (
-                <TechBadge client:load name={tech} />
-              ))}
-            </div>
-          </div>
-        </div>
-      ))}
-      
-      <div class="relative flex gap-6">
-        <div class="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-text-muted/50 bg-surface">
-            <div class="h-2 w-2 rounded-full bg-text-muted"></div>
-        </div>
-        <div class="py-2 text-text-muted">Initial commit</div>
-      </div>
-    </div>
+    <GitLogList client:visible items={experienceData} />
   </div>
 </section>

@@ -48,6 +48,16 @@ export const skillsData: SkillGroup[] = [
         ]
     },
     {
+        title: "AI & Automation",
+        skills: [
+            { name: "LLM Integration", level: 100 },
+            { name: "Agentic Workflows & MCPs", level: 100 },
+            { name: "Context Engineering", level: 100 },
+            { name: "Spec-Driven Development", level: 100 },
+            { name: "AI-Assisted Dev Tools", level: 100 }
+        ]
+    },
+    {
         title: "Soft Skills",
         skills: [
             { name: "Agile (Scrum, Kanban)", level: 100 },

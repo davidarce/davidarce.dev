@@ -15,6 +15,10 @@ import { Grafana } from '@/components/ui/svgs/grafana';
 import { Btc } from '@/components/ui/svgs/btc';
 import { AwsLight } from '@/components/ui/svgs/awsLight';
 import { AwsDark } from '@/components/ui/svgs/awsDark';
+import { ClaudeAiIcon } from '@/components/ui/svgs/claudeAiIcon';
+import { Copilot } from '@/components/ui/svgs/copilot';
+import { CopilotDark } from '@/components/ui/svgs/copilotDark';
+import { Gemini } from '@/components/ui/svgs/gemini';
 
 interface TechBadgeProps {
     name: string;
@@ -40,6 +44,9 @@ const techIcons: Record<string, { light?: React.ComponentType<any>; dark?: React
     "Grafana": { default: Grafana },
     "Blockchain": { default: Btc },
     "AWS": { light: AwsLight, dark: AwsDark },
+    "Claude": { default: ClaudeAiIcon },
+    "GitHub Copilot": { light: Copilot, dark: CopilotDark },
+    "Gemini": { default: Gemini },
 };
 
 // Helper to get icon component based on theme
@@ -109,8 +116,9 @@ export default function TechBadge({ name }: TechBadgeProps) {
             className="relative inline-flex"
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
+            onClick={() => setShowTooltip(!showTooltip)}
         >
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 border border-text-muted/20 hover:border-primary/50 hover:shadow-[0_0_10px_rgba(0,243,255,0.2)] transition-all cursor-pointer p-1.5">
+            <div className="flex items-center justify-center w-10 h-10 md:w-8 md:h-8 rounded-full bg-white/10 border border-text-muted/20 hover:border-primary/50 hover:shadow-[0_0_10px_rgba(0,243,255,0.2)] transition-all cursor-pointer p-1.5">
                 <IconComponent width="100%" height="100%" />
             </div>
 

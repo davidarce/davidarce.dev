@@ -22,9 +22,11 @@ export const experienceData: ExperienceItem[] = [
       "Utilize Docker and Kubernetes (K8s) for containerization and orchestration, ensuring efficient deployment and management of microservices in distributed environments.",
       "Leverage CI/CD pipelines to automate build, test, and deployment processes, enhancing productivity.",
       "Apply rigorous software testing practices using JUnit and Karate Test to ensure high-quality, reliable code and robust system behavior.",
-      "Collaborate with cross-functional teams to scale systems, integrate APIs, and address performance bottlenecks."
+      "Collaborate with cross-functional teams to scale systems, integrate APIs, and address performance bottlenecks.",
+      "Lead the integration of AI tools (Claude Code, GitHub Copilot, Gemini) into the development workflow, improving team productivity.",
+      "Conduct training sessions on LLMs, Agents, MCPs, and Spec-Driven Development to foster AI adoption."
     ],
-    technologies: ["Java 21", "Spring Boot 3.x", "Spring WebFlux", "Redis", "Kafka", "API First", "Clean Architectures", "Grafana", "Docker", "Kubernetes"]
+    technologies: ["Java 21", "Spring Boot 3.x", "Spring WebFlux", "Redis", "Kafka", "API First", "Clean Architectures", "Grafana", "Docker", "Kubernetes", "Claude", "GitHub Copilot", "Gemini"]
   },
   {
     title: "Senior Backend Engineer",
