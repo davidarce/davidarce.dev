@@ -62,7 +62,7 @@ export default function TerminalBoot() {
     };
 
     return (
-        <div className="space-y-1 font-mono text-sm min-h-[140px]">
+        <div className="space-y-1 font-mono text-sm h-[220px] overflow-hidden">
             {displayedLines.map((line, index) => (
                 <div
                     key={index}

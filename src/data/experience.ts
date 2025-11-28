@@ -5,6 +5,7 @@ export interface ExperienceItem {
   date: string;
   description?: string;
   responsibilities?: string[];
+  technologies?: string[];
 }
 
 export const experienceData: ExperienceItem[] = [
@@ -22,7 +23,8 @@ export const experienceData: ExperienceItem[] = [
       "Leverage CI/CD pipelines to automate build, test, and deployment processes, enhancing productivity.",
       "Apply rigorous software testing practices using JUnit and Karate Test to ensure high-quality, reliable code and robust system behavior.",
       "Collaborate with cross-functional teams to scale systems, integrate APIs, and address performance bottlenecks."
-    ]
+    ],
+    technologies: ["Java 21", "Spring Boot 3.x", "Spring WebFlux", "Redis", "Kafka", "API First", "Clean Architectures", "Grafana", "Docker", "Kubernetes"]
   },
   {
     title: "Senior Backend Engineer",
@@ -35,7 +37,8 @@ export const experienceData: ExperienceItem[] = [
       "Ensure the requirements of functionality, quality and performance",
       "Deliver in Production a working software by giving the best use to technology and development practices",
       "Support Production by analysis and fixing any bugs that occurs"
-    ]
+    ],
+    technologies: ["Java 17", "Spring Boot", "RestFul APIs", "Microservices", "Docker", "Kubernetes"]
   },
   {
     title: "Software Engineer III (Promoted) ⭐",
@@ -49,14 +52,16 @@ export const experienceData: ExperienceItem[] = [
       "Design solutions, code, test, and deploy them, while optimizing existing products",
       "Write clear, maintainable code that will perform on multiple platforms",
       "Solve integration problems, prototype and develop custom solutions"
-    ]
+    ],
+    technologies: ["Java 21", "Spring Boot", "Go", "RestFul APIs", "Microservices", "NewRelic", "AWS", "Event-Driven Architectures", "Docker", "Kubernetes"]
   },
   {
     title: "Software Engineer II",
     company: "dLocal",
     location: "Remote",
     date: "August 2021 - April 2023",
-    description: "All-in-one payment platform connecting global merchants to emerging markets in Latin America"
+    description: "All-in-one payment platform connecting global merchants to emerging markets in Latin America",
+    technologies: ["Java", "Spring Boot", "Microservices"]
   },
   {
     title: "Senior Software Engineer",
@@ -68,7 +73,8 @@ export const experienceData: ExperienceItem[] = [
       "Development and maintaining microservices used to manage internal products in the company",
       "Responsible of application security vulnerabilities",
       "Add improvements to our current processes."
-    ]
+    ],
+    technologies: ["Java", "ReactJs", "NodeJs", "Microservices", "Docker"]
   },
   {
     title: "Senior Java Developer",
@@ -80,7 +86,8 @@ export const experienceData: ExperienceItem[] = [
       "Development and maintaining Java/Spring Microservices used to manage our online vending and locker systems.",
       "Responsible of application security vulnerabilities",
       "Add improvements to our current processes."
-    ]
+    ],
+    technologies: ["Java", "NodeJs", "Blockchain", "Microservices", "Docker", "Kubernetes"]
   },
   {
     title: "Senior Software Engineer",
@@ -95,7 +102,8 @@ export const experienceData: ExperienceItem[] = [
       "A/B testing with Google Analytics",
       "Responsible of application security vulnerabilities",
       "Add improvements to our current processes."
-    ]
+    ],
+    technologies: ["Java", "Spring Boot", "Spring WebFlux", "RestFul APIs", "Microservices", "Redis", "Kafka", "Docker"]
   },
   {
     title: "Software Architect",
@@ -107,7 +115,8 @@ export const experienceData: ExperienceItem[] = [
       "Develop software requeriments under the language of required programming and with policies, procedures, and guidelines established by the company for all products",
       "Promote and adequate communication and cooperation environment with the members of the project team",
       "Value the objectives of the project over personal or particular, supporting all team members in the solution of the difficulties"
-    ]
+    ],
+    technologies: ["Java", "Spring Boot", "Microservices"]
   },
   {
     title: "Software Developer Advance",
@@ -118,6 +127,7 @@ export const experienceData: ExperienceItem[] = [
       "Develop software requirements under the language of required programing and with policies, procedures, and guidelines established by the company, for all products",
       "Develop software under the procedures and quality standards established",
       "Serve support in customer service"
-    ]
+    ],
+    technologies: ["Java"]
   }
 ];

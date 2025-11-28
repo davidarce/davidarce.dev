@@ -1,6 +1,7 @@
 ---
 import { experienceData } from '../data/experience';
 import { GitCommit, GitBranch } from 'lucide-react';
+import TechBadge from './TechBadge';
 ---
 
 <section id="experience" class="py-20 md:pl-16">
@@ -14,10 +15,12 @@ import { GitCommit, GitBranch } from 'lucide-react';
 
     <div class="relative space-y-8 font-mono">
       <!-- Vertical Line - Now visible in light mode -->
-      <div class="absolute left-[19px] top-4 h-full w-0.5 bg-text-muted/30"></div>
+      <div class="absolute left-0 top-0 h-full w-10 flex justify-center">
+        <div class="h-full w-0.5 bg-text-muted opacity-30"></div>
+      </div>
 
       {experienceData.map((item, index) => (
-        <div class="group relative flex gap-6">
+        <div id={`commit-${index}`} class="group relative flex gap-6">
           <!-- Commit Node -->
           <div class="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-text-muted/50 bg-surface transition-all group-hover:border-primary/50 group-hover:shadow-[0_0_15px_rgba(0,243,255,0.3)]">
             <GitCommit className="h-5 w-5 text-text-muted transition-colors group-hover:text-primary" />
@@ -56,8 +59,9 @@ import { GitCommit, GitBranch } from 'lucide-react';
             )}
             
             <div class="mt-4 flex flex-wrap gap-2">
-                <span class="rounded bg-text-muted/10 px-2 py-1 text-xs text-text-muted border border-text-muted/20">#backend</span>
-                <span class="rounded bg-text-muted/10 px-2 py-1 text-xs text-text-muted border border-text-muted/20">#system-design</span>
+              {item.technologies?.map((tech) => (
+                <TechBadge client:load name={tech} />
+              ))}
             </div>
           </div>
         </div>
