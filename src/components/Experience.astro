@@ -69,13 +69,12 @@ const total = experienceData.length;
 	const btn = document.getElementById("show-all");
 	// Collapse extra entries only when JS runs; they stay visible without it.
 	document.querySelectorAll<HTMLElement>("[data-extra]").forEach((el) => {
-		el.setAttribute("hidden", "until-found");
+		el.hidden = true;
 	});
 	btn?.addEventListener("click", () => {
 		const expanded = btn.getAttribute("aria-expanded") === "true";
 		document.querySelectorAll<HTMLElement>("[data-extra]").forEach((el) => {
-			if (expanded) el.setAttribute("hidden", "until-found");
-			else el.removeAttribute("hidden");
+			el.hidden = expanded;
 		});
 		btn.setAttribute("aria-expanded", String(!expanded));
 		const total = document.querySelectorAll(".job").length;
