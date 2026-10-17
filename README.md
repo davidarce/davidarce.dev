@@ -1,25 +1,27 @@
 # David Arce - Portfolio
 
-Modern portfolio website built with Astro, React, and Tailwind CSS featuring a cyberpunk "System Core" theme.
+Personal portfolio built with Astro, React islands and Tailwind CSS. Minimal editorial design with a light terminal accent.
 
 ## 🚀 Features
 
-- **Interactive Terminal Interface** - Boot sequence animation with system diagnostics
-- **Multiple Themes** - System (Cyberpunk), Light, Matrix, and Ocean themes
-- **Command Palette** - Quick navigation with Cmd+K
-- **Git Log Visualization** - Experience timeline as git commits
-- **System Status Dashboard** - Skills displayed as server metrics
-- **Responsive Design** - Optimized for desktop and mobile
-- **Active Navigation** - Sidebar highlights current section
+- **AI Enablement section** - tools, agentic software factories and impact, with a factory diagram
+- **Multiple Themes** - System (follows the OS), Light, Matrix and Ocean, applied before first paint
+- **Command Palette** - Cmd/Ctrl+K for navigation, links and theme switching
+- **Experience Timeline** - data-driven from `src/data/experience.ts`
+- **Responsive Design** - sticky top bar, vertical diagram on small screens
 
 ## 🛠️ Tech Stack
 
 - **Framework**: Astro 5.x
-- **UI Library**: React 18
-- **Styling**: Tailwind CSS
-- **Icons**: Lucide React
+- **UI Library**: React 19 (islands)
+- **Styling**: Tailwind CSS 3 plus CSS design tokens in `src/styles/global.css`
+- **Fonts**: Geist and Geist Mono
 - **Package Manager**: pnpm
 - **Deployment**: GitHub Pages
+
+## 🗂️ Content
+
+Edit `src/data/experience.ts`, `skills.ts` and `education.ts` to update the site.
 
 ## 📦 Installation
 
@@ -39,11 +41,11 @@ pnpm preview
 
 ## 🎨 Themes
 
-The portfolio includes 4 custom themes:
-- **System** (Default) - Cyberpunk with cyan/purple accents
-- **Light** - Clean light mode with blue accents
-- **Matrix** - Green terminal aesthetic
-- **Ocean** - Deep blue ocean-inspired palette
+The portfolio includes 4 themes, defined as tokens in `src/styles/global.css`:
+- **System** (default) - follows the OS light/dark preference
+- **Light** - clean light mode with a blue accent
+- **Matrix** - dark with a green accent
+- **Ocean** - dark blue with a cyan accent
 
 ## 🚢 Deployment
 
