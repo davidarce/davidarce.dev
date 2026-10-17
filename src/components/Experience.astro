@@ -16,7 +16,7 @@ const total = experienceData.length;
 				const shown = bullets.slice(0, 3);
 				const rest = bullets.slice(3);
 				return (
-					<div class:list={["job", { now: i === 0 }]} hidden={i >= VISIBLE} data-extra={i >= VISIBLE ? "" : undefined}>
+					<div class:list={["job", { now: i === 0 }]} data-extra={i >= VISIBLE ? "" : undefined}>
 						<div class="when">
 							<i>{job.date}</i>
 							{job.location}
@@ -66,19 +66,20 @@ const total = experienceData.length;
 </section>
 
 <script>
-	function bind() {
-		const btn = document.getElementById("show-all");
-		if (!btn) return;
-		btn.addEventListener("click", () => {
-			const expanded = btn.getAttribute("aria-expanded") === "true";
-			document.querySelectorAll<HTMLElement>("[data-extra]").forEach((el) => {
-				el.hidden = expanded;
-			});
-			btn.setAttribute("aria-expanded", String(!expanded));
-			const total = document.querySelectorAll(".job").length;
-			btn.textContent = expanded ? `Show all (${total})` : "Show less";
+	const btn = document.getElementById("show-all");
+	// Collapse extra entries only when JS runs; they stay visible without it.
+	document.querySelectorAll<HTMLElement>("[data-extra]").forEach((el) => {
+		el.setAttribute("hidden", "until-found");
+	});
+	btn?.addEventListener("click", () => {
+		const expanded = btn.getAttribute("aria-expanded") === "true";
+		document.querySelectorAll<HTMLElement>("[data-extra]").forEach((el) => {
+			if (expanded) el.setAttribute("hidden", "until-found");
+			else el.removeAttribute("hidden");
 		});
-	}
-	bind();
-	document.addEventListener("astro:after-swap", bind);
+		btn.setAttribute("aria-expanded", String(!expanded));
+		const total = document.querySelectorAll(".job").length;
+		btn.textContent = expanded ? `Show all (${total})` : "Show less";
+		if (expanded) btn.scrollIntoView({ block: "nearest" });
+	});
 </script>

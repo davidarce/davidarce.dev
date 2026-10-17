@@ -1,5 +1,4 @@
 ---
-import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 
 interface Props {
@@ -23,19 +22,20 @@ const {
 		<meta name="generator" content={Astro.generator} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://davidarce.dev/" />
+		<meta name="twitter:card" content="summary" />
+		<link rel="canonical" href="https://davidarce.dev/" />
 
 		<!-- Apply the saved theme before first paint to avoid a flash -->
 		<script is:inline>
 			(function () {
-				function apply() {
-					var t = "system";
-					try {
-						t = localStorage.getItem("theme") || "system";
-					} catch (e) {}
-					document.documentElement.setAttribute("data-theme", t);
-				}
-				apply();
-				document.addEventListener("astro:after-swap", apply);
+				var t = "system";
+				try {
+					t = localStorage.getItem("theme") || "system";
+				} catch (e) {}
+				if (["system", "light", "matrix", "ocean"].indexOf(t) < 0) t = "system";
+				document.documentElement.setAttribute("data-theme", t);
 			})();
 		</script>
 
@@ -47,7 +47,6 @@ const {
 		/>
 
 		<title>{title}</title>
-		<ClientRouter />
 	</head>
 	<body>
 		<slot />

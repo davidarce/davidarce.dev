@@ -12,8 +12,12 @@ type Item = {
 const EMAIL = "davidarce2915@gmail.com";
 
 function go(hash: string) {
-	const el = hash === "#top" ? document.body : document.querySelector(hash);
-	el?.scrollIntoView({ behavior: "smooth" });
+	const el = hash === "#top" ? document.body : document.querySelector<HTMLElement>(hash);
+	if (!el) return;
+	const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+	el.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+	el.setAttribute("tabindex", "-1");
+	el.focus({ preventScroll: true });
 	history.replaceState(null, "", hash);
 }
 
@@ -23,6 +27,8 @@ export default function CommandPalette() {
 	const [sel, setSel] = useState(0);
 	const [theme, setThemeState] = useState<ThemeId>("system");
 	const inputRef = useRef<HTMLInputElement>(null);
+	const listRef = useRef<HTMLDivElement>(null);
+	const returnFocus = useRef<HTMLElement | null>(null);
 
 	const items = useMemo<Item[]>(
 		() => [
@@ -69,6 +75,7 @@ export default function CommandPalette() {
 		setOpen(false);
 		setQuery("");
 		setSel(0);
+		returnFocus.current?.focus({ preventScroll: true });
 	};
 
 	useEffect(() => {
@@ -87,19 +94,26 @@ export default function CommandPalette() {
 		const onKey = (e: KeyboardEvent) => {
 			if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
 				e.preventDefault();
-				setOpen((p) => !p);
-				setSel(0);
+				if (open) close();
+				else {
+					setOpen(true);
+					setSel(0);
+				}
 				return;
 			}
 			if (!open) return;
 			if (e.key === "Escape") close();
 			else if (e.key === "ArrowDown") {
 				e.preventDefault();
-				setSel((p) => Math.min(p + 1, filtered.length - 1));
+				setSel((p) => Math.max(0, Math.min(p + 1, filtered.length - 1)));
 			} else if (e.key === "ArrowUp") {
 				e.preventDefault();
 				setSel((p) => Math.max(p - 1, 0));
-			} else if (e.key === "Enter" && filtered[sel]) {
+			} else if (
+				e.key === "Enter" &&
+				filtered[sel] &&
+				!(document.activeElement instanceof HTMLButtonElement)
+			) {
 				e.preventDefault();
 				filtered[sel].run();
 				close();
@@ -111,21 +125,28 @@ export default function CommandPalette() {
 
 	useEffect(() => setSel(0), [query]);
 	useEffect(() => {
-		if (open) inputRef.current?.focus();
+		if (!open) return;
+		returnFocus.current = document.activeElement as HTMLElement | null;
+		if (!window.matchMedia("(pointer: coarse)").matches) inputRef.current?.focus();
 	}, [open]);
+
+	useEffect(() => {
+		listRef.current?.querySelector('[data-sel="true"]')?.scrollIntoView({ block: "nearest" });
+	}, [sel]);
 
 	if (!open) return null;
 
 	let lastGroup = "";
 	return (
 		<div className="pal-back" onClick={close}>
-			<div className="pal" role="dialog" aria-label="Command palette" onClick={(e) => e.stopPropagation()}>
+			<div className="pal" role="dialog" aria-modal="true" aria-label="Command palette" onClick={(e) => e.stopPropagation()}>
 				<div className="pal-in">
 					<span className="mono" style={{ color: "var(--accent)" }}>
 						&gt;
 					</span>
 					<input
 						ref={inputRef}
+						aria-label="Search commands"
 						type="text"
 						placeholder="Type a command..."
 						value={query}
@@ -133,7 +154,7 @@ export default function CommandPalette() {
 					/>
 					<span className="kbd">ESC</span>
 				</div>
-				<div className="pal-list">
+				<div className="pal-list" ref={listRef}>
 					{filtered.length === 0 && (
 						<div className="pal-h" style={{ padding: "24px 10px" }}>
 							No results

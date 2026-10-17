@@ -3,9 +3,11 @@ import { THEMES, getTheme, setTheme, type ThemeId } from "../lib/theme";
 
 export default function ThemeSwitcher() {
 	const [current, setCurrent] = useState<ThemeId>("system");
+	const [mounted, setMounted] = useState(false);
 
 	useEffect(() => {
 		setCurrent(getTheme());
+		setMounted(true);
 		const onChange = (e: Event) => setCurrent((e as CustomEvent<ThemeId>).detail);
 		window.addEventListener("themechange", onChange);
 		return () => window.removeEventListener("themechange", onChange);
@@ -17,7 +19,7 @@ export default function ThemeSwitcher() {
 				<button
 					key={t.id}
 					type="button"
-					aria-pressed={current === t.id}
+					aria-pressed={mounted && current === t.id}
 					onClick={() => setTheme(t.id)}
 				>
 					{t.label}

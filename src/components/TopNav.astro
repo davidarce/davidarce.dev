@@ -2,6 +2,7 @@
 import ThemeSwitcher from "./ThemeSwitcher";
 ---
 
+<header class="topbar">
 <div class="wrap">
 	<nav class="topnav" aria-label="Main">
 		<a class="brand" href="#top">david<b>@</b>arce ~</a>
@@ -19,18 +20,15 @@ import ThemeSwitcher from "./ThemeSwitcher";
 				id="open-palette"
 				aria-label="Open command palette"
 			>
-				⌘K
+				<span class="k-d">⌘K</span><span class="k-m">Menu</span>
 			</button>
 		</div>
 	</nav>
 </div>
+</header>
 
 <script>
-	function bind() {
-		document.getElementById("open-palette")?.addEventListener("click", () => {
-			window.dispatchEvent(new Event("open-palette"));
-		});
-	}
-	bind();
-	document.addEventListener("astro:after-swap", bind);
+	document.getElementById("open-palette")?.addEventListener("click", () => {
+		window.dispatchEvent(new Event("open-palette"));
+	});
 </script>
