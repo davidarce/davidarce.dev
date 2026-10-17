@@ -38,6 +38,17 @@ export default function CommandPalette() {
 			{ id: "skills", label: "Skills", group: "Navigate", run: () => go("#skills") },
 			{ id: "edu", label: "Education", group: "Navigate", run: () => go("#education") },
 			{
+				id: "cv",
+				label: "Download CV (PDF)",
+				group: "Actions",
+				run: () => {
+					const a = document.createElement("a");
+					a.href = "/David-Arce-CV.pdf";
+					a.download = "David-Arce-CV.pdf";
+					a.click();
+				},
+			},
+			{
 				id: "gh",
 				label: "Open GitHub",
 				group: "Actions",
