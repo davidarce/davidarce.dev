@@ -225,6 +225,7 @@ h2.sec-title .pr { font-family: var(--mono); font-weight: 400; color: var(--acce
 .job ul { margin: 0 0 14px; padding-left: 18px; list-style: disc; color: var(--muted); font-size: 15px; max-width: 64ch; }
 .job details { margin: 0 0 14px; }
 .job summary { cursor: pointer; font: 400 12px var(--mono); color: var(--accent); margin-bottom: 8px; }
+.job[hidden] { display: none; }
 .job.now::before { content: ""; position: absolute; left: -16px; top: 32px; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
 .more { margin-top: 8px; font: 500 13px var(--mono); color: var(--accent); border: 1px solid var(--border-s); background: transparent; border-radius: 6px; padding: 8px 14px; cursor: pointer; }
 
@@ -264,6 +265,7 @@ h2.sec-title .pr { font-family: var(--mono); font-weight: 400; color: var(--acce
   .navlinks, .themes-desktop { display: none; }
   .sec { padding-block: 64px; }
   .stats { grid-template-columns: 1fr 1fr; }
+  .stat b { font-size: 1.35rem; }
   .stat:nth-child(3) { border-left: 0; padding-left: 0; }
   .stat:nth-child(n + 3) { margin-top: 24px; border-top: 1px solid var(--border); }
   .k-d { display: none; }
