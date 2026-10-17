@@ -1,0 +1,84 @@
+---
+import { experienceData } from "../data/experience";
+
+const VISIBLE = 4;
+const total = experienceData.length;
+---
+
+<section id="experience" class="sec">
+	<div class="eyebrow">Career</div>
+	<h2 class="sec-title"><span class="pr">~/</span>experience</h2>
+	<div>
+		{
+			experienceData.map((job, i) => {
+				const summary = job.summary ?? job.description;
+				const bullets = job.responsibilities ?? [];
+				const shown = bullets.slice(0, 3);
+				const rest = bullets.slice(3);
+				return (
+					<div class:list={["job", { now: i === 0 }]} hidden={i >= VISIBLE} data-extra={i >= VISIBLE ? "" : undefined}>
+						<div class="when">
+							<i>{job.date}</i>
+							{job.location}
+						</div>
+						<div>
+							<h3>
+								{job.title} <span>· {job.company}</span>
+							</h3>
+							{summary && <p>{summary}</p>}
+							{shown.length > 0 && (
+								<ul>
+									{shown.map((b) => (
+										<li>{b}</li>
+									))}
+								</ul>
+							)}
+							{rest.length > 0 && (
+								<details>
+									<summary>+{rest.length} more</summary>
+									<ul>
+										{rest.map((b) => (
+											<li>{b}</li>
+										))}
+									</ul>
+								</details>
+							)}
+							{job.technologies && (
+								<div class="chips">
+									{job.technologies.map((t) => (
+										<span class="chip">{t}</span>
+									))}
+								</div>
+							)}
+						</div>
+					</div>
+				);
+			})
+		}
+	</div>
+	{
+		total > VISIBLE && (
+			<button class="more" type="button" id="show-all" aria-expanded="false">
+				Show all ({total})
+			</button>
+		)
+	}
+</section>
+
+<script>
+	function bind() {
+		const btn = document.getElementById("show-all");
+		if (!btn) return;
+		btn.addEventListener("click", () => {
+			const expanded = btn.getAttribute("aria-expanded") === "true";
+			document.querySelectorAll<HTMLElement>("[data-extra]").forEach((el) => {
+				el.hidden = expanded;
+			});
+			btn.setAttribute("aria-expanded", String(!expanded));
+			const total = document.querySelectorAll(".job").length;
+			btn.textContent = expanded ? `Show all (${total})` : "Show less";
+		});
+	}
+	bind();
+	document.addEventListener("astro:after-swap", bind);
+</script>

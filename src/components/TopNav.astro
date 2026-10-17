@@ -1,0 +1,36 @@
+---
+import ThemeSwitcher from "./ThemeSwitcher";
+---
+
+<div class="wrap">
+	<nav class="topnav" aria-label="Main">
+		<a class="brand" href="#top">david<b>@</b>arce ~</a>
+		<div class="navlinks">
+			<a href="#ai">AI Enablement</a>
+			<a href="#experience">Experience</a>
+			<a href="#skills">Skills</a>
+			<a href="#education">Education</a>
+		</div>
+		<div class="ctl">
+			<ThemeSwitcher client:load />
+			<button
+				type="button"
+				class="kbd"
+				id="open-palette"
+				aria-label="Open command palette"
+			>
+				⌘K
+			</button>
+		</div>
+	</nav>
+</div>
+
+<script>
+	function bind() {
+		document.getElementById("open-palette")?.addEventListener("click", () => {
+			window.dispatchEvent(new Event("open-palette"));
+		});
+	}
+	bind();
+	document.addEventListener("astro:after-swap", bind);
+</script>
