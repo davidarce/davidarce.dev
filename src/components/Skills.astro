@@ -1,0 +1,22 @@
+---
+import { skillsData } from "../data/skills";
+---
+
+<section id="skills" class="sec">
+	<div class="eyebrow">Capabilities</div>
+	<h2 class="sec-title"><span class="pr">~/</span>skills</h2>
+	<div class="sk">
+		{
+			skillsData.map((group) => (
+				<div class:list={["grp", { w: group.highlight }]}>
+					<h3>{group.title}</h3>
+					<div class="chips">
+						{group.skills.map((skill, i) => (
+							<span class:list={["chip", { a: group.highlight && i < 6 }]}>{skill}</span>
+						))}
+					</div>
+				</div>
+			))
+		}
+	</div>
+</section>

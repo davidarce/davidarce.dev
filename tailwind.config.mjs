@@ -4,20 +4,15 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				bg: 'var(--color-bg)',
-				surface: 'var(--color-surface)',
-				'surface-hover': 'var(--color-surface-hover)',
-				text: 'var(--color-text)',
-				'text-muted': 'var(--color-text-muted)',
-				primary: 'var(--color-primary)',
-				secondary: 'var(--color-secondary)',
-				success: 'var(--color-success)',
-				warning: 'var(--color-warning)',
-				error: 'var(--color-error)',
+				bg: 'var(--bg)',
+				surface: 'var(--surface)',
+				text: 'var(--text)',
+				muted: 'var(--muted)',
+				accent: 'var(--accent)',
 			},
 			fontFamily: {
-				sans: ['Inter', 'sans-serif'],
-				mono: ['JetBrains Mono', 'monospace'],
+				sans: ['Geist', 'system-ui', 'sans-serif'],
+				mono: ['Geist Mono', 'ui-monospace', 'monospace'],
 			},
 		},
 	},

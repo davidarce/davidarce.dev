@@ -1,219 +1,193 @@
-import { useState, useEffect } from 'react';
-import { Terminal, Search, Code, Cpu, BookOpen, Command, Monitor, Sun, Waves, Palette } from 'lucide-react';
-import clsx from 'clsx';
+import { useEffect, useMemo, useRef, useState } from "react";
+import { THEMES, getTheme, setTheme, type ThemeId } from "../lib/theme";
 
-const commands = [
-    { id: 'home', label: 'System Boot', icon: Terminal, href: '#', type: 'navigation' },
-    { id: 'experience', label: 'Git Log History', icon: Code, href: '#experience', type: 'navigation' },
-    { id: 'skills', label: 'System Status', icon: Cpu, href: '#skills', type: 'navigation' },
-    { id: 'education', label: 'Cert Store', icon: BookOpen, href: '#education', type: 'navigation' },
-];
+type Item = {
+	id: string;
+	label: string;
+	group: "Navigate" | "Actions" | "Theme";
+	hint?: string;
+	run: () => void;
+};
 
-const themes = [
-    { id: 'system', label: 'System Theme', icon: Monitor, type: 'theme' },
-    { id: 'light', label: 'Light Theme', icon: Sun, type: 'theme' },
-    { id: 'matrix', label: 'Matrix Theme', icon: Terminal, type: 'theme' },
-    { id: 'ocean', label: 'Ocean Theme', icon: Waves, type: 'theme' },
-];
+const EMAIL = "davidarce2915@gmail.com";
+
+function go(hash: string) {
+	const el = hash === "#top" ? document.body : document.querySelector<HTMLElement>(hash);
+	if (!el) return;
+	const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+	el.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+	el.setAttribute("tabindex", "-1");
+	el.focus({ preventScroll: true });
+	history.replaceState(null, "", hash);
+}
 
 export default function CommandPalette() {
-    const [isOpen, setIsOpen] = useState(false);
-    const [query, setQuery] = useState('');
-    const [selectedIndex, setSelectedIndex] = useState(0);
-    const [currentTheme, setCurrentTheme] = useState('system');
+	const [open, setOpen] = useState(false);
+	const [query, setQuery] = useState("");
+	const [sel, setSel] = useState(0);
+	const [theme, setThemeState] = useState<ThemeId>("system");
+	const inputRef = useRef<HTMLInputElement>(null);
+	const listRef = useRef<HTMLDivElement>(null);
+	const returnFocus = useRef<HTMLElement | null>(null);
 
-    useEffect(() => {
-        const savedTheme = localStorage.getItem('theme') || 'system';
-        setCurrentTheme(savedTheme);
-    }, []);
+	const items = useMemo<Item[]>(
+		() => [
+			{ id: "top", label: "Home", group: "Navigate", run: () => go("#top") },
+			{ id: "ai", label: "AI Enablement", group: "Navigate", run: () => go("#ai") },
+			{ id: "exp", label: "Experience", group: "Navigate", run: () => go("#experience") },
+			{ id: "skills", label: "Skills", group: "Navigate", run: () => go("#skills") },
+			{ id: "edu", label: "Education", group: "Navigate", run: () => go("#education") },
+			{
+				id: "gh",
+				label: "Open GitHub",
+				group: "Actions",
+				run: () => window.open("https://github.com/davidarce", "_blank", "noopener"),
+			},
+			{
+				id: "li",
+				label: "Open LinkedIn",
+				group: "Actions",
+				run: () => window.open("https://www.linkedin.com/in/davidarce92", "_blank", "noopener"),
+			},
+			{
+				id: "mail",
+				label: "Copy email",
+				group: "Actions",
+				hint: EMAIL,
+				run: () => {
+					navigator.clipboard?.writeText(EMAIL).catch(() => {});
+				},
+			},
+			...THEMES.map<Item>((t) => ({
+				id: `theme-${t.id}`,
+				label: `${t.label} theme`,
+				group: "Theme",
+				hint: theme === t.id ? "active" : undefined,
+				run: () => setTheme(t.id),
+			})),
+		],
+		[theme],
+	);
 
-    const allCommands = [...commands, ...themes];
-    const filteredCommands = allCommands.filter((cmd) =>
-        cmd.label.toLowerCase().includes(query.toLowerCase())
-    );
+	const filtered = items.filter((i) => i.label.toLowerCase().includes(query.toLowerCase()));
 
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-                e.preventDefault();
-                setIsOpen((prev) => !prev);
-                setSelectedIndex(0);
-            }
+	const close = () => {
+		setOpen(false);
+		setQuery("");
+		setSel(0);
+		returnFocus.current?.focus({ preventScroll: true });
+	};
 
-            if (!isOpen) return;
+	useEffect(() => {
+		setThemeState(getTheme());
+		const onTheme = (e: Event) => setThemeState((e as CustomEvent<ThemeId>).detail);
+		const onOpen = () => setOpen(true);
+		window.addEventListener("themechange", onTheme);
+		window.addEventListener("open-palette", onOpen);
+		return () => {
+			window.removeEventListener("themechange", onTheme);
+			window.removeEventListener("open-palette", onOpen);
+		};
+	}, []);
 
-            if (e.key === 'Escape') {
-                setIsOpen(false);
-                setQuery('');
-                setSelectedIndex(0);
-            }
+	useEffect(() => {
+		const onKey = (e: KeyboardEvent) => {
+			if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+				e.preventDefault();
+				if (open) close();
+				else {
+					setOpen(true);
+					setSel(0);
+				}
+				return;
+			}
+			if (!open) return;
+			if (e.key === "Escape") close();
+			else if (e.key === "ArrowDown") {
+				e.preventDefault();
+				setSel((p) => Math.max(0, Math.min(p + 1, filtered.length - 1)));
+			} else if (e.key === "ArrowUp") {
+				e.preventDefault();
+				setSel((p) => Math.max(p - 1, 0));
+			} else if (
+				e.key === "Enter" &&
+				filtered[sel] &&
+				!(document.activeElement instanceof HTMLButtonElement)
+			) {
+				e.preventDefault();
+				filtered[sel].run();
+				close();
+			}
+		};
+		window.addEventListener("keydown", onKey);
+		return () => window.removeEventListener("keydown", onKey);
+	}, [open, filtered, sel]);
 
-            if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                setSelectedIndex((prev) =>
-                    prev < filteredCommands.length - 1 ? prev + 1 : prev
-                );
-            }
+	useEffect(() => setSel(0), [query]);
+	useEffect(() => {
+		if (!open) return;
+		returnFocus.current = document.activeElement as HTMLElement | null;
+		if (!window.matchMedia("(pointer: coarse)").matches) inputRef.current?.focus();
+	}, [open]);
 
-            if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                setSelectedIndex((prev) => (prev > 0 ? prev - 1 : 0));
-            }
+	useEffect(() => {
+		listRef.current?.querySelector('[data-sel="true"]')?.scrollIntoView({ block: "nearest" });
+	}, [sel]);
 
-            if (e.key === 'Enter' && filteredCommands[selectedIndex]) {
-                e.preventDefault();
-                handleSelect(filteredCommands[selectedIndex]);
-            }
-        };
+	if (!open) return null;
 
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [isOpen, selectedIndex, filteredCommands]);
-
-    // Reset selected index when query changes
-    useEffect(() => {
-        setSelectedIndex(0);
-    }, [query]);
-
-    const handleSelect = (item: typeof allCommands[0]) => {
-        if (item.type === 'navigation' && 'href' in item) {
-            window.location.href = item.href;
-            setIsOpen(false);
-            setQuery('');
-        } else if (item.type === 'theme') {
-            setCurrentTheme(item.id);
-            localStorage.setItem('theme', item.id);
-            document.documentElement.setAttribute('data-theme', item.id);
-            setIsOpen(false);
-            setQuery('');
-        }
-    };
-
-    return (
-        <>
-            {isOpen && (
-                <div
-                    className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 pt-[20vh] backdrop-blur-sm"
-                    onClick={() => {
-                        setIsOpen(false);
-                        setQuery('');
-                        setSelectedIndex(0);
-                    }}
-                >
-                    <div
-                        className="w-full max-w-lg overflow-hidden rounded-xl border border-white/10 bg-[#0a0a0a] shadow-2xl shadow-primary/20 mx-4"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <div className="flex items-center border-b border-white/10 px-4 py-3">
-                            <Search className="mr-3 h-5 w-5 text-gray-400" />
-                            <input
-                                type="text"
-                                className="flex-1 bg-transparent text-lg text-white placeholder-gray-500 focus:outline-none font-mono"
-                                placeholder="Type a command or theme..."
-                                value={query}
-                                onChange={(e) => setQuery(e.target.value)}
-                                autoFocus
-                            />
-                            <div className="flex items-center gap-1 rounded border border-white/10 bg-white/5 px-2 py-0.5 text-xs text-gray-400">
-                                <span className="text-xs">ESC</span>
-                            </div>
-                        </div>
-
-                        <div className="max-h-[60vh] overflow-y-auto p-2">
-                            {filteredCommands.length === 0 ? (
-                                <div className="py-12 text-center text-gray-500">No commands found.</div>
-                            ) : (
-                                <>
-                                    {/* Navigation Section */}
-                                    {filteredCommands.some(cmd => cmd.type === 'navigation') && (
-                                        <div className="mb-4">
-                                            <div className="mb-2 px-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                                                Navigation
-                                            </div>
-                                            <div className="space-y-1">
-                                                {filteredCommands.filter(cmd => cmd.type === 'navigation').map((cmd) => {
-                                                    const cmdIndex = filteredCommands.indexOf(cmd);
-                                                    return (
-                                                        <button
-                                                            key={cmd.id}
-                                                            onClick={() => handleSelect(cmd)}
-                                                            onMouseEnter={() => setSelectedIndex(cmdIndex)}
-                                                            className={clsx(
-                                                                'flex w-full items-center rounded-lg px-4 py-3 text-left transition-colors',
-                                                                cmdIndex === selectedIndex
-                                                                    ? 'bg-primary/10 text-primary'
-                                                                    : 'text-gray-300 hover:bg-white/5'
-                                                            )}
-                                                        >
-                                                            <cmd.icon className={clsx("mr-3 h-5 w-5", cmdIndex === selectedIndex ? "text-primary" : "text-gray-500")} />
-                                                            <span className="flex-1 font-mono text-sm">{cmd.label}</span>
-                                                            {cmdIndex === selectedIndex && (
-                                                                <span className="text-xs text-primary/50">Enter</span>
-                                                            )}
-                                                        </button>
-                                                    );
-                                                })}
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {/* Themes Section */}
-                                    {filteredCommands.some(cmd => cmd.type === 'theme') && (
-                                        <div>
-                                            <div className="mb-2 px-2 text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-2">
-                                                <Palette className="h-3 w-3" />
-                                                Themes
-                                            </div>
-                                            <div className="space-y-1">
-                                                {filteredCommands.filter(cmd => cmd.type === 'theme').map((cmd) => {
-                                                    const cmdIndex = filteredCommands.indexOf(cmd);
-                                                    const isActive = currentTheme === cmd.id;
-                                                    return (
-                                                        <button
-                                                            key={cmd.id}
-                                                            onClick={() => handleSelect(cmd)}
-                                                            onMouseEnter={() => setSelectedIndex(cmdIndex)}
-                                                            className={clsx(
-                                                                'flex w-full items-center rounded-lg px-4 py-3 text-left transition-colors',
-                                                                cmdIndex === selectedIndex
-                                                                    ? 'bg-primary/10 text-primary'
-                                                                    : 'text-gray-300 hover:bg-white/5'
-                                                            )}
-                                                        >
-                                                            <cmd.icon className={clsx("mr-3 h-5 w-5", cmdIndex === selectedIndex ? "text-primary" : "text-gray-500")} />
-                                                            <span className="flex-1 font-mono text-sm">{cmd.label}</span>
-                                                            {isActive && (
-                                                                <span className="text-xs text-success">Active</span>
-                                                            )}
-                                                        </button>
-                                                    );
-                                                })}
-                                            </div>
-                                        </div>
-                                    )}
-                                </>
-                            )}
-                        </div>
-
-                        {/* Footer - ProTip only on desktop */}
-                        <div className="border-t border-white/10 bg-white/5 px-4 py-2 text-xs text-gray-500 flex justify-between">
-                            <span className="hidden md:block">ProTip: Use arrows to navigate</span>
-                            <span className="md:hidden">Tap to select</span>
-                            <span className="font-mono text-primary">System Core v2.0</span>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Floating Trigger Button - Only on Mobile */}
-            {!isOpen && (
-                <button
-                    onClick={() => setIsOpen(true)}
-                    className="fixed bottom-6 right-6 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 border border-primary/30 text-primary shadow-[0_0_15px_rgba(0,243,255,0.3)] backdrop-blur-md transition-transform hover:scale-110 active:scale-95 md:hidden"
-                >
-                    <Command className="h-6 w-6" />
-                </button>
-            )}
-        </>
-    );
+	let lastGroup = "";
+	return (
+		<div className="pal-back" onClick={close}>
+			<div className="pal" role="dialog" aria-modal="true" aria-label="Command palette" onClick={(e) => e.stopPropagation()}>
+				<div className="pal-in">
+					<span className="mono" style={{ color: "var(--accent)" }}>
+						&gt;
+					</span>
+					<input
+						ref={inputRef}
+						aria-label="Search commands"
+						type="text"
+						placeholder="Type a command..."
+						value={query}
+						onChange={(e) => setQuery(e.target.value)}
+					/>
+					<span className="kbd">ESC</span>
+				</div>
+				<div className="pal-list" ref={listRef}>
+					{filtered.length === 0 && (
+						<div className="pal-h" style={{ padding: "24px 10px" }}>
+							No results
+						</div>
+					)}
+					{filtered.map((item, idx) => {
+						const header = item.group !== lastGroup ? item.group : null;
+						lastGroup = item.group;
+						return (
+							<div key={item.id}>
+								{header && <div className="pal-h">{header}</div>}
+								<button
+									type="button"
+									className="pal-item"
+									data-sel={idx === sel}
+									onMouseEnter={() => setSel(idx)}
+									onClick={() => {
+										item.run();
+										close();
+									}}
+								>
+									<span>{item.label}</span>
+									{item.hint && <span className="r">{item.hint}</span>}
+								</button>
+							</div>
+						);
+					})}
+				</div>
+				<div className="pal-foot">
+					<span>↑↓ navigate · ↵ select</span>
+					<span>⌘K toggle</span>
+				</div>
+			</div>
+		</div>
+	);
 }

@@ -1,27 +1,26 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Sidebar from "../components/Sidebar.astro";
+import TopNav from "../components/TopNav.astro";
 import CommandPalette from "../components/CommandPalette";
-import TerminalHero from "../components/TerminalHero.astro";
-import GitHistory from "../components/GitHistory.astro";
-import SystemStatus from "../components/SystemStatus.astro";
-import CertStore from "../components/CertStore.astro";
+import Hero from "../components/Hero.astro";
+import AIEnablement from "../components/AIEnablement.astro";
+import Experience from "../components/Experience.astro";
+import Skills from "../components/Skills.astro";
+import Education from "../components/Education.astro";
 import Footer from "../components/Footer.astro";
 ---
 
-<Layout title="David Arce | Senior Backend Engineer">
-	<!-- Interactive Elements -->
+<Layout title="David Arce | Tech Lead & AI Engineering Enabler">
 	<CommandPalette client:load />
-	<Sidebar />
-
-	<main class="relative">
-		<TerminalHero />
-		<GitHistory />
-		<SystemStatus />
-		<CertStore />
+	<TopNav />
+	<main class="wrap">
+		<Hero />
+		<AIEnablement />
+		<Experience />
+		<Skills />
+		<Education />
 	</main>
-
-	<div class="md:pl-16">
+	<div class="wrap">
 		<Footer />
 	</div>
 </Layout>
